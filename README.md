@@ -30,12 +30,12 @@ OpenJDK 64-Bit Server VM Microsoft-13106404 (build 21.0.10+7-LTS, mixed mode, sh
   - Eclipse, InteliJ, NetBeans, `Visual Studio Code` 중 선정
 
 - VS Code 확장
-  - Java 검색
+  - `Java` 검색
 
   ![alt text](image.png)
-  - 설치. Debugger 포함 6개 확장이 추가 설치됨
+  - 설치진행. Debugger 포함 6개 확장이 추가 설치됨
 
-#### Java 개발환경 확인
+#### Java 프로젝트 생성방법
 
 1. 명령 팔레트(Ctrl + Shift + P) 오픈
 
@@ -45,17 +45,17 @@ OpenJDK 64-Bit Server VM Microsoft-13106404 (build 21.0.10+7-LTS, mixed mode, sh
 
    ![alt text](image-2.png)
 
-3. 폴더 선택
+3. 프로젝트 폴더 선택
 
-4. DSL 선택
+4. DSL, Groovy 선택
 
    ![alt text](image-3.png)
 
-5. Gradle 프로젝트명 선택
+5. Gradle 프로젝트명 선택 (폴더명과 동일하게 진행)
 
    ![alt text](image-4.png)
 
-6. 오른쪽 하단에 프로젝트 진행 팝업
+6. 오른쪽 하단에 프로젝트 진행 팝업, 프로젝트 파일 생성
 
    ![alt text](image-5.png)
 
@@ -63,11 +63,11 @@ OpenJDK 64-Bit Server VM Microsoft-13106404 (build 21.0.10+7-LTS, mixed mode, sh
 
    ![alt text](image-6.png)
 
-8. 새 VS Code 오픈 -> 빌드 진행
+8. 새 VS Code 오픈 -> 추가 빌드 진행
 
    ![alt text](image-7.png)
 
-9. Gradle 확장이 있는지 확인
+9. Gradle 확장이 있는지 확인. 코끼리 아이콘이 안나타나면 Gradle이 제대로 설정안된 것.
 
    ![alt text](image-8.png)
 
@@ -79,27 +79,27 @@ OpenJDK 64-Bit Server VM Microsoft-13106404 (build 21.0.10+7-LTS, mixed mode, sh
 
     ![alt text](image-10.png)
 
-### Java 프로젝트
+### Java 생태계
 
 #### Java 학습 이유
 
 - Python, Javascript도 웹 서비스를 구현 가능. 개발도 빨리 가능
 - Python 웹 개발 - 빨리 만들자
 - Javascript 웹 개발 - 자유롭게 만들자
-- Java 웹 개발 - 안전하게 오래쓰는 웹을 만들자. 실수가 나지 않도록 서비스
+- Java 웹 개발 - `안전하게 오래쓰는 웹`을 만들자. 실수가 나지 않도록 서비스
 
 #### Java
 
 ![alt text](image-12.png)
 
-- 1995년에 제임스 고슬링 개발자 발표
+- 1995년에 제임스 고슬링 발표
 - 객체지향 언어 - Python, JavaScript, C++, C#, Go...
 - 가전제품에 탑재하기 위해서 개발 -> 웹 개발, 모바일(안드로이드) 이후 실제 가전제품 탑재 중
 - 대한민국에서 웹에 가장 많이 사용되는 언어, 기업 80% 이상에서 사용 중
 
 - 사용가능한 곳
   - `웹 개발`(JSP, Spring, SpringBoot)
-  - 순수 안드로이드 개발
+  - 순수 안드로이드 모바일 개발
   - 이외 모든 분야 사용가능
   - 시스템 프로그래밍, 높은 성능 요구, iOS 모바일 개발 은 어려움
 
@@ -121,10 +121,10 @@ OpenJDK 64-Bit Server VM Microsoft-13106404 (build 21.0.10+7-LTS, mixed mode, sh
 - 번호가 작을 수록 큰 그룹
 
 1. VS Code 개발툴 : 개발을 위한 모든 것이 포함
-2. Java : 개발하기 위한 언어
+2. Java : 개발하기 위한 언어(선별)
 3. JDK : 개발 툴킷
 4. JVM : 자바가 실행될 수 있는 환경
-5. Gradle : JVM 상에서 동작하는 Java 빌드 도구. Java 프로젝트 환경자체를 거의 자동으로 구성
+5. Gradle : JVM 상에서 동작하는 Java 빌드 도구. Java 프로젝트 환경자체를 거의 자동으로 구성. Android, Java 빌드 도구로 활용
 6. Java 폴더, 소스 : Gradle이 설정한 필요 폴더와 위치에 파일들 배치
 
 #### 빌드도구
@@ -142,13 +142,13 @@ ex01/
  ├─ app/
  │   ├─ src/
  │   │   ├─ main/
- │   │   │   └─ java/
+ │   │   │   └─ java/   -> 실제 자바 코딩소스
  │   │   └─ test/
  │   │       └─ java/
- │   └─ build.gradle 또는 build.gradle.kts
- ├─ settings.gradle 또는 settings.gradle.kts
+ │   └─ build.gradle 또는 build.gradle.kts  -> 프로젝트 설정
+ ├─ settings.gradle 또는 settings.gradle.kts -> 프로젝트 설정
  ├─ gradlew
- ├─ gradlew.bat
+ ├─ gradlew.bat  -> Gradle 재실행 시 필요
  └─ gradle/wrapper/
 ```
 
@@ -256,6 +256,452 @@ public class App {   // 클래스 선언
 
 #### 객체지향
 
-#### 메서드
+- 절차지향 방식의 문제점
+  - 학생수가 늘어나면 관리가 매우 어려움
+  - 관련된 데이터가 흩어지고,
+  - 같은 형태의 변수선언이 반복되고,
+  - 학생 한 명의 정보를 하나의 단위(그룹)으로 다루기 힘들고
+  - 이름, 나이, 점수 사이의 관계가 드러나지 않음
+
+  ```java
+  // 학생 1번 정보
+  String stdName1 = "Kim";
+  int stdAge1 = 20;
+  int stdScore1 = 95;
+
+  // 학생 2번 정보
+  String stdName2 = "Lee";
+  int stdAge2 = 21;
+  int stdScore2 = 100;
+  ```
+
+- 객체지향으로 해결하자
+  - 하나의 객체로 표현
+  - 학생을 하나의 단위로 핸들링
+
+  ```java
+  // 객체지향 방식
+  class Student {
+      String name;
+      int age;
+      int score;
+  }
+
+  // 객체지향은 그룹핑(단위 묶음)
+  Student std1 = new Student();
+  std1.name = "Kim";
+  std1.age = 20;
+  std1.score = 95;
+  ```
+
+  ```java
+  // 객체 활용방법.
+  List<Student> students = new ArrayList<>();
+
+  // 데이터 추가. 여러 데이터를 쉽게 추가가능
+  students.add(new Student("유고", 49, 95));
+  students.add(new Student("요미", 28, 90));
+  students.add(new Student("철수", 35, 100));
+  ```
+
+#### 클래스와 객체
+
+- 클래스(Class)
+  - 객체(Object)를 만들기 위한 설계도
+  - 붕어빵틀을 상상
+  - 클래스 : 학생 설계도 / 객체 : 실제 학생 한 명
+
+  ```java
+  class Student {
+    String name;
+    int age;
+  }
+  ```
+
+  - 이 상태는 아직 실제 학생이 아님. 설계만 존재
+
+- 객체(Object)
+  - 클래스를 바탕으로 실제 메모리에 생성된 대상!
+  - 실제 붕어빵. 붕어빵틀에서 나온 각각의 붕어빵
+  - 틀 하나로 여러개의 붕어빵을 만들 수 있음
+
+  ```java
+  // Student : Integer, Long과 같은 타입
+  // std1 : 변수명
+  // new : 인스턴스(객체)를 생성하는 키워드
+  // Student() : 생성자
+  Student std1 = new Student();
+  ```
+
+  - 순서
+    1. Student 타입의 객체를 생성
+    2. 메모리(힙)에 Student 객체를 위치
+    3. 객체의 주소를 s1에 참조(reference)
+
+#### 필드와 메서드
+
+- 필드(Field)
+  - 멤버 변수, 멤버 필드 - 클래스에 속한 변수
+  - 객체가 가지는 데이터
+  - 클래스 내에 선언한 변수
+  - 일반 변수와 사용법은 동일
+
+  ```java
+  class Stduent {
+    String name;
+    int age;
+    ..
+  ```
+
+- 메서드(Method)
+  - 멤버 메서드 - 클래스에 속한 메서드(함수)
+  - 객체가 수행할 수 있는 동작
+  - 일반 함수와 동일
+
+  ```java
+  class Student {
+    String name;
+    int age;
+
+    void introduce() {
+      System.out.println("학생이름 : " + name + ", 나이 : " + age);
+    }
+  }
+  ```
+
+- 리턴이 있는 메서드 vs 리턴이 없는 메서드
+  - 메서드명 앞에 리턴되는 타입을 지정
+
+    ```java
+    int getIntVal() {
+      return 10;
+    }
+
+    float getFloatVal() {
+      return 3.14f;
+    }
+
+    boolean getTrue() {
+      return false;
+    }
+
+    void printHello() {
+      System.out.println("Hello");
+    }
+
+    int setIntVal(int x) {
+      int result = 10;
+      return result + x;
+    }
+    ```
+
+- 클래스 내에 메서드를 넣는 이유
+  - 학생에 대한 동작은 학생 클래스 안에서 하는 것이 자연스러움
+  - 데이터와 기능을 묶는 것이 `객체지향의 핵심`!
+
+- 생성자(Contructor)
+  - 객체가 생성될 때 자동으로 호출되는 특별한 메서드, Python의 **init**와 동일
+  - 없으면 자동 생성, 필요하면 클래스명과 동일한 메서드를 작성
+
+  ```java
+  class Student {
+    String name;
+    int age;
+
+    Student() { // 클래스명과 동일한 메서드
+      System.out.println("Student 객체 생성");
+    }
+  }
+
+  Student std1 = new Student(); // 기본 생성자
+  ```
+
+  - 생성자 특징
+    - 클래스 이름과 동일
+    - 반환형이 없음
+    - 객체 초기화에만 사용
+    - 객체 만들때 필수 데이터를 강제화
+    - 잘못된 상태의 객체 생성을 줄임
+
+- 매개변수 생성자(추가 생성자)
+  - 초기화시 인자를 받아서 객체 생성하는 방법이 필요할때
+  - 코딩양을 줄일 수 있고, 간단
+
+- this 키워드
+  - Python self와 유사한 기능
+  - 멤버변수와 파라미터 이름이 같을때 구분을 위해 사용
+
+#### 접근제한자, 캡슐화
+
+- 코드 위험성
+
+  ```java
+  // 계좌 정보 클래스
+  class Account {  // 계좌 클래스
+      int balance; // 잔고
+  }
+  ```
+
+  - 위 코드는 언제든지 balance에 접근가능
+
+- 캡슐화(Encapsulation)
+  - 객체 내부의 데이터를 외부에서 마음대로 바꾸지 못하게 막고, `정해진 방법으로만 접근가능`하게 만드는 것
+
+  ```java
+        ...
+        Account myAcc = new Account();
+        // myAcc.balance = -100000;  // 누구나(개발자) 잔고라는 멤버변수에 접근가능
+        myAcc.deposit(2000000);
+
+        System.out.println("계좌 잔고는 : " + myAcc.getBalance());
+        myAcc.withdraw(300000000);  // 잘못된 동작을 막아줌
+        System.out.println("계좌 잔고는 : " + myAcc.getBalance());
+      }
+  }
+
+  // 계좌 정보 클래스
+  class Account {  // 계좌 클래스
+      private int balance; // 잔고
+
+      // 입금, 여기서만 돈을 입금할 수 있고
+      public void deposit(int amount) {
+          if (amount > 0) {
+              this.balance += amount;
+          }
+      }
+
+      // 출금, 여기서만 돈을 출금할 수 있고
+      public void withdraw(int amount) {
+          if (amount > 0 && this.balance >= amount) {
+              this.balance -= amount;
+          }
+      }
+
+      // 잔고확인은 여기서만
+      public int getBalance() {
+          return this.balance;
+      }
+  }
+  ```
+
+  - private, getter/setter
+    - `private` : 외부에서 접근불가. 내부에서만 접근가능
+    - `public` : 어디서나 접근가능, 외부에서도 접근가능
+    - getter : getBalance
+    - setter : deposit/withdraw
+
+    | 접근제한자 | 동일 클래스 | 동일 패키지 | 자식 클래스 | 외부 전체 |
+    | :--------- | ----------- | ----------- | ----------- | --------- |
+    | private    | O           | X           | X           | X         |
+    | default    | O           | O           | X           | X         |
+    | protected  | O           | O           | O           | X         |
+    | public     | O           | O           | O           | O         |
+
+- static
+  - 정적. 객체마다 따로 존재하는 것이 아니고, 클래스에 하나만 존재하는 멤버
+  - 클래스의 경우 new로 객체를 생성하지 않음
+  - 메서드의 경우도 객체 생성없이 사용가능
+  - static void main : 프로그램이 시작되면 메모리 한 영역에 적재되고, 프로그램 종료시 해제
+  - static를 자주 사용하지 말 것
+
+#### 상속
+
+- 기존 클래스의 필드와 메서드를 물려받아 새로운 클래스를 만드는 것
+
+  ```java
+  class Animal {
+    String name;
+
+    void eat() {
+      System.out.println("먹는다");
+    }
+  }
+
+  class Dog extends Animal {
+    // Animal이 갖고 있는 name과 eat() 사용가능
+    void bark() {
+      System.out.println("멍멍!");
+    }
+  }
+  ```
+
+  - 공통기능 재사용. Animal이 가지고 있는 모든 특성을 다 사용하면서 Dog의 특징을 포함
+  - 부모 클래스(super class) Animal, 자식 클래스(sub class) Dog
+  - is-a 관계 : Dog is an Animal
+
+#### 메서드 오버라이딩
+
+- 상속 받은 클래스에서 부모 클래스의 메서들 자기 방식으로 다시 정의해서 사용하는 것
+
+  ```java
+  class Animal {
+    void sound() {
+      System.out.println("동물 소리");  // 부모클래스 메서드
+    }
+  }
+
+  class Dog extends Animal {
+    @Override
+    void sound() {
+      System.out.println("멍멍!");
+    }
+  }
+
+  class Cat extends Animal {
+    @Override
+    void sound() {
+      System.out.println("야옹!");
+    }
+  }
+  ```
+
+#### 어노테이션 - @
+
+- 자바 파일 컴파일 시, 어노테이션 감지해서 그에 따라 정해진 작업을 수행하는 도구
+- @ 키워드로 컴파일러나 프로그램에 특별한 의미/정보를 전달하는 태그
+
+- @Override : 부모클래스에 같은 메서드 있는 거 알어. 근데, 내가 다시 만든거 써!
+- 어노테이션 종류
+  - @Override
+  - @Deprecated : 이제는 사용안할 메서드 지정
+  - @SupressWarning : 컴파일러에게 경고 메시지 출력하지 말것
+  - @SpringBootApplication, @Component, @Service, @Repository, @Controller, ... : SpringBoot 어노테이션 들
+
+#### 메서드 오버로딩
+
+- 같은 이름의 메서드를 매개변수 다르게 여러개 정의
+
+  ```java
+  class PrintTool {
+    void print(int x) {}
+    void print(String s) {}
+    //void print(int y) {} // 컴파일 오류
+    void print(int x, int y) {}
+  }
+  ```
+
+#### this/super
+
+- this : 자기 자신 지칭
+- super : 부코 클래스 지칭
+
+  ```java
+  class Animal {
+    String name = "동물";
+  }
+
+  class Dog extends Animal {
+    Dog() {
+      super();   // 부모 생성자 / this() 자기객체 생성자
+    }
+    String name = "강아지";
+
+    void printName() {
+      System.out.println(this.name);  // 강아지 출력
+      System.out.println(super.name);  // 동물 출력
+    }
+  }
+  ```
+
+#### 업캐스팅
+
+- 부모클래스 변수에 생성된 자식 객체를 할당하는 것
+- 유연한 코드 기법
+- instanceof 연산자 : 타입확인
+
+  ```java
+  // 업캐스팅
+  Animal a1 = new Cat();
+  a1.sound();
+
+  // 다운캐스팅
+  // 자식클래스로 다시 변환전에 정확한 타입을 확인
+  if (a1 instanceof Cat) {
+      Cat c1 = (Cat)a1;
+      c1.printName();
+  }
+  ```
+
+#### 추상 클래스
+
+- 객체를 직접 만들지 않고, 공통 규칙과 공통 기능을 제공하는 클래스
+
+  ```java
+  abstract class Animal {
+    String name;
+
+    // 추상메서드
+    abstract void sound();  // 내부 구현을 하지 않는다!, 자식에서는 구현하라!
+
+    // 구현도 가능
+    void sleep() {
+      System.out.println("쿨쿨~");
+    }
+  }
+
+  class Dog extends Animal {
+    @Override
+    void sound() {
+      System.out.println("멍멍!");
+    }
+  }
+
+  // Animal ani = new Animal();  // Animal 객체는 생성불가!
+  ```
+
+- 추상 클래스는 객체를 생성할 수 없다!
+- 공통 기능은 넣고 싶고, 일부 동작은 자식마다 다르게 구현을 강제하고 싶을때
+- 자식이 반드시 구현해하하는 메서드를 강제할 수 있음
+- 클래스를 틀에 맞춰서 생성하고 필요한 메서드도 `규칙을 정하겠다`는 의지
+- 규칙대로 따르라는 설계 지침
+
+#### 인터페이스
+
+- 클래스가 반드시 구현해야 하는 기능의 규약
+- 규칙을 완전 통제, 통일할 수 있음
+- 클래스의 한 종류. 상속이라 부르지 않고 구현(implemetation)이라고 칭함
+- 인터페이스는 인터페이스로 상속이 가능
+- 다형성을 더 강하게 활용할 수 있는 방법
+- 상속과 별개로 사용가능
+- 인터페이스는 개별 파일을 생성해야함
+- 인터페이스는 메서드 정의만하고 구현은 못함. 인터페이스를 가져다 쓰는 클래스에서 정의된 메서드를 강제 구현해야 함
+
+  ```java
+  // iCage 인터페이스를 가져다 쓰는 클래스는 반드시 아래의 메서드를 구현해야함
+  interface iCage {
+    void checkIn();
+    void checkOut();
+  }
+
+  class Cat extends Animal implements iCage {
+    @Override
+    public void checkIn() {
+      // ...
+    }
+
+    @Override
+    public void checkOut() {
+      // ...
+    }
+  }
+
+  ```
+
+- 비교 정리
+  |항목| 추상 클래스 | 인터페이스 |
+  |---|---|---|
+  |상속/구현| extends(상속) | implements(구현)|
+  |다중사용| 단일 상속 | 다중 구현 |
+  |공통상태 보관 | 가능 | 제한적 |
+  |목적| 공통 상태 + 규칙 | 규칙 정의 |
+
+- `class Cat extends Animal, Mammel` 다중 클래스 상속 불가능
+- `class Cat implements iCage, iMammel, iQuadru` 다중 인터페이스 구현 가능
+
+#### VS Code Tip
+
+![alt text](image-14.png)
+
+- Code snippet : 코딩 문법을 자동 생성해주는 기능
 
 #### 예외처리

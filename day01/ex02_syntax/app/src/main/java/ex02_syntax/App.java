@@ -10,7 +10,7 @@ import java.util.HashSet;  // 집합
 
 public class App {
     public static void main(String[] args) {
-        // 기본형
+        // 기본형 Primitive datatype
         int intVal = 10;    // 4byte
         long lngVal = 98324172943724987l; // 8byte 길이가 지정됨
         float fltVal = 3.141592f; // 4byte
@@ -21,7 +21,7 @@ public class App {
 
         // 기본 클래스형, 특수한 이유로 기본형을 클래스화 시킨 타입
         Integer IntValue = 10;
-        Long LngValue;
+        Long LngValue = 98324172943724987l;
         Float FltValue;
         Double DblValue;
         Character ChrValue;
