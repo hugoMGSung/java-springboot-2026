@@ -96,7 +96,29 @@ public class App {
         if (a1 instanceof Cat) {
             Cat c1 = (Cat)a1;
             c1.printName();
-        }       
+        }    
+        
+        System.out.println("복사 학습 =====> ");
+
+        // 복사
+        Student s1 = new Student();
+        s1.name = "유고";
+
+        Student s2 = s1;  // 복사
+        s2.name = "이지";
+        System.out.println(s1.name);
+        System.out.println(s2.name);
+
+        // 깊은 복사
+        Student s3 = new Student();
+        s3.name = "복이";
+
+        Student s4 = new Student();
+        s4.name = s3.name;        
+        s4.name = "애슐리";
+
+        System.out.println(s3.name);
+        System.out.println(s4.name);
     }
 }
 

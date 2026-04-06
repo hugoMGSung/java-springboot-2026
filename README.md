@@ -180,16 +180,17 @@ ex01/
 #### 학습방향
 
 - Python, Javascript 학습완료 상태
-  - [x] 변수, 데이터형
-  - [x] 배열/리스트
-  - [x] 연산자
-  - [x] 제어문 : 조건문, 반복문
-  - [ ] 객체지향
-  - [ ] 메서드
-  - [ ] 예외처리
-  - [ ] 참조개념
-  - [ ] 파일 입출력
-  - [ ] 의존성
+  - [x] 변수, 데이터형 -> 비교
+  - [x] 배열/리스트 -> 비교
+  - [x] 연산자 -> 동일
+  - [x] 제어문 : 조건문, 반복문 -> 비교
+  - [x] 객체지향 -> 비교
+  - [x] 메서드 -> 함수와 동일
+  - [x] 예외처리 -> 비교
+  - [x] 참조개념 -> 비교
+  - [x] 파일 입출력 -> 비교
+  - [x] 의존성 -> `추가`
+  - [ ] 일반화 프로그래밍 -> `추가`
 
 - 새로 공부한다 보다는 필요한 것만 보충해서 학습하겠다 생각
 
@@ -275,7 +276,7 @@ public class App {   // 클래스 선언
   int stdScore2 = 100;
   ```
 
-- 객체지향으로 해결하자
+- 객체지향으로 해결하자 - [소스](./day02/ex04_oop/app/src/main/java/ex04_oop/App.java)
   - 하나의 객체로 표현
   - 학생을 하나의 단위로 핸들링
 
@@ -501,6 +502,7 @@ public class App {   // 클래스 선언
   - 정적. 객체마다 따로 존재하는 것이 아니고, 클래스에 하나만 존재하는 멤버
   - 클래스의 경우 new로 객체를 생성하지 않음
   - 메서드의 경우도 객체 생성없이 사용가능
+  - 메모리 할당을 한번 하고, `공유해서 사용`할 수 있음
   - static void main : 프로그램이 시작되면 메모리 한 영역에 적재되고, 프로그램 종료시 해제
   - static를 자주 사용하지 말 것
 
@@ -657,14 +659,15 @@ public class App {   // 클래스 선언
 
 #### 인터페이스
 
-- 클래스가 반드시 구현해야 하는 기능의 규약
-- 규칙을 완전 통제, 통일할 수 있음
-- 클래스의 한 종류. 상속이라 부르지 않고 구현(implemetation)이라고 칭함
-- 인터페이스는 인터페이스로 상속이 가능
-- 다형성을 더 강하게 활용할 수 있는 방법
-- 상속과 별개로 사용가능
-- 인터페이스는 개별 파일을 생성해야함
-- 인터페이스는 메서드 정의만하고 구현은 못함. 인터페이스를 가져다 쓰는 클래스에서 정의된 메서드를 강제 구현해야 함
+- 인터페이스 - [소스](./day02/ex04_oop/app/src/main/java/ex04_oop/iCage.java)
+  - 클래스가 반드시 구현해야 하는 기능의 규약
+  - 규칙을 완전 통제, 통일할 수 있음
+  - 클래스의 한 종류. 상속이라 부르지 않고 구현(implemetation)이라고 칭함
+  - 인터페이스는 인터페이스로 상속이 가능
+  - 다형성을 더 강하게 활용할 수 있는 방법
+  - 상속과 별개로 사용가능
+  - 인터페이스는 개별 파일을 생성해야함
+  - 인터페이스는 메서드 정의만하고 구현은 못함. 인터페이스를 가져다 쓰는 클래스에서 정의된 메서드를 강제 구현해야 함
 
   ```java
   // iCage 인터페이스를 가져다 쓰는 클래스는 반드시 아래의 메서드를 구현해야함
@@ -705,3 +708,148 @@ public class App {   // 클래스 선언
 - Code snippet : 코딩 문법을 자동 생성해주는 기능
 
 #### 예외처리
+
+- 비정상적 종료를 막기 위해서 안전하게 처리하고 흐름을 제어하는 방법
+
+  ```java
+  int a = 10 / 0;  // ArithmeticException -> Divide by zero
+  ```
+
+  ```java
+  try {
+    int result = 10 / 0;
+  } catch (Exception e) {
+    System.out.println(e);
+  } finally {
+    System.out.println("예외 상관없이 실행");
+  }
+  ```
+
+- 예외를 직접 발생
+
+  ```java
+  // ... 구현 중 예외를 발생시키고 싶으면
+  throw new Exception("예외발생!");
+  ```
+
+- 모든 예외 클래스의 조상 클래스는 `Exception` .
+
+#### 참조개념
+
+- 얕은 복사
+  - 같은 메모리 주소를 참조. 같은 객체를 바라보고 있음
+  - 객체지향 클래스로 된 변수들에서 많이 발생
+
+  ```java
+  Student s1 = new Student();
+  s1.name = "유고";
+
+  Student s2 = s1;  // 얕은 복사
+  s2.name = "이지";
+  System.out.println(s1.name);  // 이지 출력
+  System.out.println(s2.name);  // 이지 출력
+  ```
+
+- 깊은 복사
+
+  ```java
+  // 깊은 복사
+  Student s3 = new Student();
+  s3.name = "복이";
+
+  Student s4 = new Student(); // 깊은 복사
+  s4.name = s3.name;
+  s4.name = "애슐리";
+
+  System.out.println(s3.name);  // 복이
+  System.out.println(s4.name);  // 애슐리
+  ```
+
+#### 파일 IO
+
+- 예제 - [소스](./day02/ex05_fileio/app/src/main/java/ex05_fileio/App.java)
+
+#### 의존성(Dependency)
+
+- 개념
+  - 한 클래스가 다른 클래스를 사용하는 관계(의존도)
+
+- 예제
+  - `Car는 Engine에 의존`한다
+
+  ```java
+  class Engine {
+    void run() {
+      System.out.println("엔진 동작");
+    }
+  }
+
+  class Car {
+    Engine engine = new Engine();  // 의존성 발생
+
+    void drive() {
+      engine.run();
+    }
+  }
+
+  Car car = new Car();  // 엔진 클래스를 손댈 수 없음
+  ```
+
+- 문제상황
+  - 가솔린엔진에서 전기엔진으로 바꾸려면?
+  - Car 클래스 코드를 다 뜯어고쳐야 함
+
+- 해결방법
+  - 엔진을 밖에 두자!
+  - Dependency Injection(DI) 의존성 주입
+  - 결합도를 낮추고, 테스트 쉬움, 유지보수 간단
+  - 부품을 끼워 조립하는 구조
+
+  ```java
+  class Car {
+    Engine engine;
+
+    Car(Engine engine) {
+      this.engine = engine;
+    }
+
+    void drive() {
+      engine.run();
+    }
+  }
+
+  Engine engine = new Engine();
+  Car car = new Car(engine); // Engine 인스턴스를 Car 에 주입한다
+  ```
+
+- IoC(Inversion Of Control)
+  - 제어의 역전
+
+  ```java
+  Engine e = new Engine();
+  Car c = new Car(e);
+
+  // IoC
+  // Car c = Spring이 다 만들어줌;
+  Car car = context.getBean(Car.class);
+  ```
+
+- 자동차도 만들고, 엔진도 만들고(의존성), 엔진은 만든걸 사서 조립하면(DI), 다 만들어주면(IoC)
+
+#### 람다함수(Lambda function)
+
+- 간단히 사용할 함수를 로직내에서 생성하고 사용하는 방법
+
+  ```java
+    // 람다함수
+    iCalculator add = (int a, int b) -> a + b;  // 아주 간단한 로직을 처리하는 함수
+    int result = add.calc(5, 6);
+    System.out.println("결과는 " + result);
+  }
+
+  interface iCalculator {
+      int calc(int a, int b);
+  }
+  ```
+
+#### 일반화 프로그래밍
