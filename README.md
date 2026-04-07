@@ -2,6 +2,8 @@
 
 2026년 Java개발자과정 SpringBoot 리포지토리
 
+- 기본자바 학습
+
 ## 1일차
 
 ### 개발환경 설정
@@ -190,7 +192,7 @@ ex01/
   - [x] 참조개념 -> 비교
   - [x] 파일 입출력 -> 비교
   - [x] 의존성 -> `추가`
-  - [ ] 일반화 프로그래밍 -> `추가`
+  - [x] 일반화 프로그래밍 -> `추가`
 
 - 새로 공부한다 보다는 필요한 것만 보충해서 학습하겠다 생각
 
@@ -852,4 +854,109 @@ public class App {   // 클래스 선언
   }
   ```
 
+## 3일차
+
+#### Object
+
+- Java에서 모든 클래스의 부모 클래스(Root Class) - 파이썬도 동일
+  - Integer, String 등 일반적인 클래스 포함
+  - 개발자가 생성하는 클래스도 모두 Object를 상속해서 생성
+  - 너무나 일반적이라 extends Object는 생략
+  - 모두 Object로 형변환 가능
+
 #### 일반화 프로그래밍
+
+- 일반화 필요성
+  - Python, JavaScript는 데이터타입 지정없음 -> 아무런 데이터나 변수에 들어감
+  - Java, C++, C# 등의 대부분의 객체지향 언어에서는 불가능
+
+  ```java
+    // Object의 문제점
+    Box box = new Box();
+    box.set("문자열");  // Object <- 문자열 할당
+    box.set(1000);
+    // box.set(true);
+
+    String s = (String) box.get(); // 형변환 필요
+    System.out.println(s);
+  }
+
+  class Box {
+      Object value; // 멤버 필드. 무슨 타입이든지 받을 수 있음
+
+      // setter
+      void set(Object value) {
+          this.value = value;
+      }
+      // getter
+      Object get() {
+          return this.value;
+      }
+  }
+  ```
+
+  - Exception in thread "main" java.lang.ClassCastException 형변환 예외발생
+  - 매번 형변환
+
+- Generic(일반화) 방식
+
+  ```java
+  class Box<T> {  // T -> 아무타입이나 상관없음
+    T value; // 멤버 필드. 무슨 타입이든지 받을 수 있음
+
+    // setter
+    void set(T value) {
+        this.value = value;
+    }
+    // getter
+    T get() {
+        return this.value;
+    }
+  }
+
+  // 두 타입을 받는데 어떤타입이든 받을 수 있다.
+  class Pair<K, V> {
+      K key;
+      V value;
+  }
+  ...
+  // 사용시
+  Box<String> box = new Box<String>();
+  Box<String> box = new Box<>();  // 둘 다 가능
+  Box<Number> box3 = new Box<>(); // Number 타입 : 숫자 종류는 모두 받을 수있는 클래스 타입
+  box3.set(1000);
+  box3.set(3.14f);
+  box3.set(300000L);
+
+  Pair<String, Integer> p1 = new Pair<>();
+  Pair<Integer, Float> p2 = new Pair<>();
+
+  p1.key = "Power";
+  p1.value = 10000;
+
+  p2.key = 9090;
+  p2.value = 4.267f;
+  ```
+
+  - T : 모든 타입을 의미
+  - R, K 등 아무 글자나 상관없음. 대신 통일만 시킬 것
+  - 여러 타입을 섞는 의미는 없음. 타입별로 안전하게 분리하자는 의미
+
+- 일반화 제한
+  - 특정 타입만 허용하는 방식
+
+  ```java
+  class Box<T extends Number> {
+    //...
+  ```
+
+  - 타입을 숫자형 타입만 제한두겠다
+
+- 일반화 정리
+  - 타입은 나중에 결정
+  - 타입을 마구 섞는 게 아님
+  - 안전하게 고정하여 사용하는 기술
+
+#### Next Chapter
+
+[SpringBoot](./README2.md)
