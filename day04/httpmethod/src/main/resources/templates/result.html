@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>결과</title>
+  </head>
+  <body>
+    <h2>등록 결과</h2>
+    <p th:text="'이름: ' + ${student.name}"></p>
+    <p th:text="'나이: ' + ${student.age}"></p>
+    <a th:href="@{/students/create}">재등록</a>
+  </body>
+</html>
