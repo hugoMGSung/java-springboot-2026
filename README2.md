@@ -472,8 +472,125 @@
 
 ## 5일차
 
+### build.gradle 관련 팁
+
+- Gradle(자동설치) 사용시 관련 파일 위치 : C:\Users\Admin\.gradle
+- build.gradle 의존성(라이브러리)가 다운로드 후 .gradle 폴더하위에 설치
+
 ### Spring Boot RestAPI
+
+#### HTTP 메서드 정리
+
+- GET : 웹브라우저 주소창에 URL로 전달하는 것
+- POST, PUT, DELETE : 뒷단(백그라운드)에서 데이터를 전달하는 것
 
 #### POSTMan 사용법
 
-#### Spring Boot JPA + DB연동
+- 설치 후 실행할때 회원가입이나 로그인 필요없음(Continue without an account)
+
+  ![alt text](image-23.png)
+
+- HTTP 메서드 종류 변경해서 테스트
+- POST, PUT, DELETE 의 경우는 Body 클릭, raw, json 선택 후 필요데이터(json) 입력후 SEND 버튼 클릭
+
+### Spring Boot JPA + DB연동
+
+#### Spring Boot 프로젝트 구조
+
+![alt text](image-24.png)
+
+- .gradle : 빌드도구 Gradle에 필요 구성 폴더. 현재 9.4.1
+- .vscode : VS Code가 프로젝트에 필요한 설정 담는 폴더
+- bin, build : 자바 컴파일후 생성되는 class 파일 위치
+- gradle : gradle을 자바에서 쓸수있게 만든 라이브러리 위치
+- `src/main/java` : 패키지와 자바 소스가 저장된 폴더
+  - com/pknu26/httpmethod : 지정한 Group ID와 Artifact ID를 합성한 폴더(com.pknu26.httpmethod)
+  - HelloController 클래스 접근 : com.hugo83.spring03.controller.HelloController 로 접근
+- `Spring03Application.java` : Spring Initializr가 생성하는 기본 클래스. 시작 메서드 존재
+- `src/main/resources` : 자바이외 HTML, CSS, JS, 이미지 파일, 환경파일 등 리소스가 되는 파일 저장하는 폴더
+  - static : 정적HTML파일, CSS, JS, 이미지 파일 저장
+  - templates : 스프링부트와 연게되는 thymeleaf html이나 mustache 파일 저장
+  - `application.properties` : 프로젝트 환경설정, DB설정, 환경변수
+- src/test/java : JUnit 테스트 도구 자바파일 저장
+- .gitattributes : 깃서버에서 어떻게 처리할지 설정
+- .gitignore : 깃서버에 올릴때 제외시킬 폴더, 파일
+- `build.gradle` : Gradle 기초 설정 파일. 필요 의존성(라이브러리) 등 설정
+- gradlew : 리눅스, 맥에서 사용하는 실행파일
+- gradlew.bat : 윈도우에서 사용하는 실행파일
+- HELP.md : 도움말 마크다운
+- settings.gradle : rootProject.name 설정. 고급 Gradle 설정
+
+#### Spring Boot webboard
+
+1. 프로젝트 생성
+
+- Spring Initializr 이전 내용 동일
+- Choose dependencies 선택할 의존성
+  - Spring Boot DevTools : 개발 필요 툴 기능 포함
+  - Lombok : Getter/Setter 자동 만들어주는 라이브러리
+  - Spring Web : 웹사이트 관련 작업
+  - Thymeleaf : HTML 템플릿 엔진
+  - Spring Data JPA : DB와 ORM연동 라이브러리
+  - H2 Database : 개발동안 사용하는 파일 DB
+  - Oracle Driver : 실제 운영할 DB
+
+2. H2 DB 설정
+
+- application.properties DB설정 추가
+
+```properties
+## H2 DB Settings
+spring.h2.console.enabled=true
+# 콘솔 URL
+spring.h2.console.path=/h2-console
+# H2 DB 파일 위치
+spring.datasource.url=jdbc:h2:./local
+# H2 DB 접속용 드라이버
+spring.datasource.driver-class-name=org.h2.Driver
+# H2 DB 접속계정
+spring.datasource.username=sa
+spring.datasource.password=12345
+```
+
+3. JPA 설정
+
+- Java Persistence API : 자바 관계형 데이터베이스 핸들링 방식 ORM 기술 사용라이브러리
+- ORM : 쿼리를 실행하지 않고 DB와 Java간에 데이터 자동 매핑하는 기술
+
+- application.properties JPA 설정 추가
+
+```properties
+## JPA DB Settings
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect
+# create 또는 update
+spring.jpa.hibernate.ddl-auto=create
+# 로그 쿼리 출력
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.show_sql=true
+```
+
+4. controller, entity, repository, serivce 폴더(패키지) 생성
+
+5. controller/HomeController.java 작성
+
+6. reources/templates/home.html 작성
+
+7. entity/Board.java 작성
+
+- 어노테이션 주의할 것
+  - JPA 어노테이션
+  - Lombok 어노테이션
+
+8. 웹서버 실행 후 /h2-console 확인
+
+![alt text](image-25.png)
+
+9. 테스트는 웹서버 중지상태에서 실행할 것
+
+## 6일차
+
+### Java 문법 추가
+
+- Record
+
+### Spring Boot webboard 계속
