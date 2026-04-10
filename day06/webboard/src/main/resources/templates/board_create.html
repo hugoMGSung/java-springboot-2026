@@ -1,0 +1,52 @@
+<!doctype html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::content})}"
+>
+  <div th:fragment="content" class="container my-3">
+    <div class="row">
+      <div class="col">
+        <h4 class="my-3 pb-2">게시글 쓰기</h4>
+
+        <form
+          th:action="@{/board/create}"
+          th:object="${boardForm}"
+          method="post"
+        >
+          <!-- 입력검증이 실패하면 경고창 띄우기 -->
+          <div
+            class="alert alert-danger"
+            role="alert"
+            th:if="${#fields.hasAnyErrors()}"
+          >
+            <div
+              th:each="error : ${#fields.allErrors()}"
+              th:text="${error}"
+            ></div>
+          </div>
+
+          <!-- 제목입력 영역 -->
+          <div class="mb-3">
+            <label for="title" class="form-label">제목</label>
+            <input th:field="*{title}" type="text" class="form-control" />
+          </div>
+          <!-- 내용입력 영역 -->
+          <div class="mb-3">
+            <label for="content" class="form-label">내용</label>
+            <input th:field="*{content}" type="text" class="form-control" />
+          </div>
+
+          <div class="text-end">
+            <button type="submit" class="btn btn-sm btn-primary">
+              <i class="bi bi-floppy"></i> 저장
+            </button>
+            <a th:href="@{/board/list}" class="btn btn-sm btn-secondary"
+              ><i class="bi bi-list"></i> 리스트</a
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</html>

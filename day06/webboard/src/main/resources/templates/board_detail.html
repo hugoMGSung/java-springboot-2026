@@ -1,0 +1,38 @@
+<!doctype html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::content})}"
+>
+  <div th:fragment="content" class="container my-3">
+    <div class="row">
+      <div class="col">
+        <!-- 게시판 상세글 영역 -->
+        <div class="card my-3 shadow-sm">
+          <div class="card-body">
+            <!-- 게시판 요소 위치-->
+            <h4 th:text="${board.title}" class="card-title"></h4>
+
+            <p th:text="${board.content}" class="card-text"></p>
+
+            <div class="d-flex justify-content-end">
+              <div class="badge bg-info text-dark p-1 text-start">
+                <p
+                  th:text="${#temporals.format(board.createDate, 'yyyy-MM-dd HH:mm')}"
+                ></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 게시판 목록 링크 -->
+
+        <div class="text-end">
+          <a href="/board/list" class="btn btn-sm btn-secondary">
+            <i class="bi bi-list"></i> 리스트</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</html>
