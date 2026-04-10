@@ -696,7 +696,7 @@ implementation 'org.springframework.boot:spring-boot-starter-validation'
 5. BoardService.java 추가 - [소스](./day06/webboard/src/main/java/com/pknu26/webboard/service/BoardService.java)
 6. BoardController.java 메서드 추가 - [소스](./day06/webboard/src/main/java/com/pknu26/webboard/controller/BoardController.java)
 
-## 7일차
+## 7일차 - 잠시 수정
 
 ### Spring Boot webboard 계속
 
