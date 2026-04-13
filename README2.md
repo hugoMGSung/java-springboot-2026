@@ -696,10 +696,126 @@ implementation 'org.springframework.boot:spring-boot-starter-validation'
 5. BoardService.java 추가 - [소스](./day06/webboard/src/main/java/com/pknu26/webboard/service/BoardService.java)
 6. BoardController.java 메서드 추가 - [소스](./day06/webboard/src/main/java/com/pknu26/webboard/controller/BoardController.java)
 
-## 7일차 - 잠시 수정
+## 7일차
 
 ### Spring Boot webboard 계속
 
-#### Board 수정
+#### 추가 어노테이션
+
+- 일반
+  - @RequiredArgContructor : `final` 멤버변수 파라미터를 생성자로 생성하는 Lombok 어노테이션
+  - @AllArgsConstructor : 클래스 모든 멤버변수를 파라미터로 생성자 생성
+  - @NoArgsConstructor : 기본 생성자를 자동으로 생성
+
+- DB 모델용
+  - @OneToMany : DB모델링 1대다 ERD관계를 entity내 클래스에서 설정.
+  - @ManyToOne : 다대1 ERD관계를 설정
+
+#### Board 작업
+
+- 게시글 수정
+  - board_create.html을 create와 modify 모드로 분리
+  - board_detail.html을 수정 버튼 추가
+  - BoardController에 /modify/{bno} GetMapping, PostMapping 메서드 작업
+  - BoardService에 putBoardOne 메서드 작업
+
+- 게시글 삭제
+  - board_detail.html을 삭제 버튼 추가
+  - BoardController에 /delete/{bno} GetMapping 메서드 추가
+  - BoardService에 deleteBoardOne 메서드 작업
 
 #### Reply 작업
+
+- entity/Reply 클래스
+  - 이전 Board 클래스 생성시와 동일
+  - Board board 멤버변수를 @ManyToOne으로 추가
+
+- entity/Board 클래스
+  - `List<Reply>` replyList 멤버변수, @OneToMany로 추가
+
+- repository/ReplyRepositry 인터페이스 생성
+- service/ReplyService 클래스 생성, setReply() 메서드 작성
+- validation/ReplyForm 클래스 생성
+- controller/ReplyController 클래스 생성
+- controller/BoardController 클래스 내 showDetail() 메서드 ReplyForm 파라미터 추가
+- templatates/board_detail.html 댓글 영역 코드 추가
+
+#### H2 DB에서 Oracle로 전환
+
+- application.properties에 H2관련설정을 Oracle설정으로 변경
+- 시퀀스 문제(increment 50) 해결
+- Board content 길이문제 해결
+  - Oracle에서는 VARCHAR2(4000) 이상 사용못함. 4000자 이상 불가능
+  - 긴 글, 이미지, 영화 등 대용량 데이터를 저장시 LOB(Large OBject) 타입 사용
+  - CLOB(Charactor LOB), BLOB(Binary LOB)
+
+  ![alt text](image-27.png)
+
+### MyBatis Spring Boot
+
+- Spring Boot 4.0.5
+- JDK 21
+- Gradle 9.x
+- Oracle 21
+- MyBatis
+- REST API 테스트
+- Spring MVC
+
+#### 프로젝트 생성
+
+- Spring Initializr: Creata a Gradle Project...
+- Artifact ID : studygroup
+- Choose dependencies
+  - Spring Boot DevTools
+  - Lombok
+  - Spring Web
+  - Oracle Driver
+  - Thymeleaf
+  - SpringDoc OpenAPI - swagger ui
+  - MyBatis Framework
+
+#### Oracle 사용자, 스키마 생성
+
+```sql
+-- StudyGroup 사용자, 스키마
+CREATE USER studygroup IDENTIFIED BY java12345;
+
+-- 권한
+GRANT ALL PRIVILEGES TO studygroup;
+```
+
+#### 테이블 생성
+
+```sql
+-- student 테이블
+CREATE TABLE student (
+	id NUMBER(10) PRIMARY KEY,
+	name VARCHAR2(100) NOT NULL,
+	age NUMBER(3),
+	major VARCHAR2(100)
+);
+
+-- 시퀀스
+CREATE SEQUENCE student_seq
+START WITH 1
+INCREMENT BY 1
+nocache;
+
+-- 샘플 데이터
+INSERT INTO student VALUES (student_seq.nextval, '홍길동', 20, '컴퓨터공학');
+INSERT INTO student VALUES (student_seq.nextval, '이영희', 22, '전자공학');
+
+COMMIT;
+```
+
+#### application.properties 설정
+
+- Oracle 설정
+- MyBatis 설정
+
+#### MyBatis
+
+- 개발자가 작성한 SQL문을 매핑해서 지원하는 프레임워크
+- DB 쿼리를 xml로 Java 코드와 분리, 유지보수와 생산성을 높이는 기능
+- JPA : ORM 프레임워크와 달리 직접 쿼리를 작성
+- JPA가진 복잡한 쿼리 문제를 MyBatis로 해결
