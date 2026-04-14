@@ -1,0 +1,74 @@
+<!doctype html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::content})}"
+>
+  <div th:fragment="content" class="container my-3">
+    <h3 th:text="'게시글 작성'"></h3>
+
+    <!-- boardForm.boardId가 있으면 수정 -->
+    <form
+      th:object="${boardForm}"
+      th:action="${boardForm != null and boardForm.boardId != null} ? @{|/board/edit/${boardForm.boardId}|} : @{/board/create}"
+      method="post"
+    >
+      <div class="row">
+        <label for="title" class="form-label">제목</label>
+        <input
+          type="text"
+          id="title"
+          th:field="*{title}"
+          class="form-control"
+        />
+      </div>
+      <div
+        class="error alert alert-danger"
+        th:if="${#fields.hasErrors('title')}"
+        th:errors="*{title}"
+      ></div>
+
+      <div class="row">
+        <label for="writer" class="form-label">작성자</label>
+        <input
+          type="text"
+          id="writer"
+          th:field="*{writer}"
+          class="form-control"
+        />
+      </div>
+      <div
+        class="error alert alert-danger"
+        th:if="${#fields.hasErrors('writer')}"
+        th:errors="*{writer}"
+      ></div>
+
+      <div class="row">
+        <label for="content" class="form-label">내용</label>
+        <textarea
+          id="content"
+          th:field="*{content}"
+          class="form-control"
+        ></textarea>
+      </div>
+      <div
+        class="error alert alert-danger"
+        th:if="${#fields.hasErrors('content')}"
+        th:errors="*{content}"
+      ></div>
+
+      <div class="row mt-2">
+        <div class="col">
+          <div class="text-end">
+            <button type="submit" class="btn btn-sm btn-primary">
+              <i class="bi bi-floppy"></i> 저장
+            </button>
+            <a th:href="@{/board/list}" class="btn btn-sm btn-success">
+              <i class="bi bi-list"></i> 목록
+            </a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</html>

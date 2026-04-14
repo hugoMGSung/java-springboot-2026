@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pknu26.studygroup.mapper.BoardMapper">
+    <select id="findAll" resultType="Board">
+        SELECT BOARD_ID
+             , TITLE
+             , CONTENT
+             , WRITER
+             , CREATED_AT
+             , UPDATED_AT
+         FROM BOARD
+        ORDER BY BOARD_ID DESC
+    </select>
+
+    <select id="findById" parameterType="long" resultType="Board">
+        SELECT BOARD_ID
+             , TITLE
+             , CONTENT
+             , WRITER
+             , CREATED_AT
+             , UPDATED_AT
+         FROM BOARD
+        WHERE BOARD_ID = #{boardId}
+    </select>
+    
+    <insert id="insertBoard" parameterType="Board">
+        INSERT INTO BOARD (
+            BOARD_ID, 
+            TITLE,
+            CONTENT,
+            WRITER, 
+            CREATED_AT
+        ) VALUES (
+            board_seq.NEXTVAL, 
+            #{title}, 
+            #{content}, 
+            #{writer}, 
+            SYSDATE
+        )
+    </insert>
+
+    <update id="updateBoard" parameterType="Board">
+        UPDATE BOARD
+           SET TITLE= #{title}
+             , CONTENT= #{content}
+             , WRITER= #{writer}
+             , UPDATED_AT= SYSDATE
+         WHERE BOARD_ID= #{boardId}
+    </update>
+
+    <delete id="deleteBoard" parameterType="long">
+        DELETE FROM BOARD
+         WHERE BOARD_ID=#{boardId}
+    </delete>
+</mapper>

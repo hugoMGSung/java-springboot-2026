@@ -1,0 +1,76 @@
+<!doctype html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::content})}"
+>
+  <div th:fragment="content" class="container my-3">
+    <h3>게시판 상세</h3>
+
+    <div class="card px-2 py-2 my-2">
+      <div class="row">
+        <div class="col-2">
+          <span class="label">번호:</span>
+          <span th:text="${board.boardId}"></span>
+        </div>
+        <div class="col-8">
+          <span class="label">제목:</span>
+          <span th:text="${board.title}"></span>
+        </div>
+        <div class="col-2">
+          <span class="label">작성자:</span>
+          <span th:text="${board.writer}"></span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <span class="label">작성일:</span>
+          <span
+            th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}"
+          ></span>
+        </div>
+        <div class="col">
+          <span class="label">수정일:</span>
+          <span
+            th:text="${#temporals.format(board.updatedAt, 'yyyy-MM-dd HH:mm')}"
+          ></span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <span class="label">내용 : </span>
+          <div th:text="${board.content}"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="text-end">
+          <a
+            th:href="@{|/board/edit/${board.boardId}|}"
+            class="btn btn-sm btn-warning"
+          >
+            <i class="bi bi-pencil-fill"></i> 수정
+          </a>
+
+          <form
+            th:action="@{|/board/delete/${board.boardId}|}"
+            method="post"
+            style="display: inline"
+          >
+            <button type="submit" class="btn btn-sm btn-danger">
+              <i class="bi bi-trash-fill"></i> 삭제
+            </button>
+          </form>
+
+          <a th:href="@{/board/list}" class="btn btn-sm btn-success">
+            <i class="bi bi-list-ul"></i> 목록
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</html>
