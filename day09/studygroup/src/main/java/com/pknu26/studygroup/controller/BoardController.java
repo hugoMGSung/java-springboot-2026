@@ -7,8 +7,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pknu26.studygroup.dto.Board;
+import com.pknu26.studygroup.dto.PageRequest;
 import com.pknu26.studygroup.service.BoardService;
+import com.pknu26.studygroup.service.ReplyService;
 import com.pknu26.studygroup.validation.BoardForm;
+import com.pknu26.studygroup.validation.ReplyForm;
 
 import jakarta.validation.Valid;
 
@@ -25,36 +28,53 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    // 목록
+    @Autowired
+    private ReplyService replyService;  // 댓글도 가져와야 함
+
+    // 목록, 페이징 용 변경
     @GetMapping("/list")
-    public String list(Model model) {
-        model.addAttribute("boardList", this.boardService.readBoardList());
+    public String list(@ModelAttribute PageRequest pageRequest, Model model) {
+        model.addAttribute("response", this.boardService.readBoardList(pageRequest));
         return "/board/list"; // board 폴더 밑에 위치한 list.html을 리턴하라
     }
     
-    // 목록상세보기
+    // 목록상세보기    
     @GetMapping("/detail/{boardId}")
     public String detail(@PathVariable("boardId") Long boardId, Model model) {
         Board board = this.boardService.readBoardById(boardId);
+
         model.addAttribute("board", board);
+        // 댓글 리스트 추가
+        model.addAttribute("replyList", this.replyService.getReplyListByBoardId(boardId));
+
+        ReplyForm replyForm = new ReplyForm();
+        replyForm.setBoardId(boardId);
+        model.addAttribute("replyForm", replyForm);
+
         return "/board/detail";
     }
 
     // 글쓰기 GET
+    // #PRC01 - 웹 브라우저에서 URL로 요청
     @GetMapping("/create")  // http://localhost:8080/board/create
-    public String showCreateForm(BoardForm boardForm) {
+    public String showCreateForm(@ModelAttribute("boardForm") BoardForm boardForm) {
+        // #PRC02 - 입력값 검증 BoardForm을 읽어온 후, /board/form.html에 model로 전달
         return "/board/form"; // .html 작성안함. /baord/form.html 화면 띄움
     }
 
     // 글쓰기 POST
+    // #PRC04 - 폼화면에서 저장버튼 누르면 발생.
     // BoardForm 입력검증 클래스, BindingResult 검증처리
     @PostMapping("/create") 
     public String create(@Valid BoardForm boardForm, BindingResult bindingResult) {
+        // #PRC05 - 입력에 에러가 있으면 다시 폼화면으로 이동
         if (bindingResult.hasErrors()) {
             return "/board/form";
         }
 
+        // #PRC06 - 입력값이 정확하면 서비스에 메서드 호출. 파라미터로 폼값
         this.boardService.createBoard(boardForm);
+        // #PRC15 - 화면이 목록화면으로 표시
         return "redirect:/board/list";
     }
 
