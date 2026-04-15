@@ -10,7 +10,7 @@
              , LOGIN_ID
              , PASSWORD
              , NAME
-             , "ROLE"
+             , ROLE
              , CREATED_AT
              , UPDATED_AT
          FROM USER_ACCOUNT
@@ -23,7 +23,7 @@
             LOGIN_ID, 
             PASSWORD, 
             NAME, 
-            "ROLE", 
+            ROLE,
             CREATED_AT
         ) VALUES (
             user_account_seq.nextval,
