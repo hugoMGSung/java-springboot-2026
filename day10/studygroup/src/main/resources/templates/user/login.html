@@ -1,0 +1,41 @@
+<!doctype html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::content})}"
+>
+  <div th:fragment="content" class="container my-3" style="max-width: 600px">
+    <h3 class="mb-4">로그인</h3>
+
+    <form th:action="@{/user/login}" th:object="${userLoginForm}" method="post">
+      <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+      </div>
+
+      <div class="mb-3">
+        <label for="loginId" class="form-label">아이디</label>
+        <input
+          type="text"
+          id="loginId"
+          th:field="*{loginId}"
+          class="form-control"
+        />
+        <div class="text-danger mt-1" th:errors="*{loginId}"></div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">패스워드</label>
+        <input
+          type="password"
+          id="password"
+          th:field="*{password}"
+          class="form-control"
+        />
+        <div class="text-danger mt-1" th:errors="*{password}"></div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">로그인</button>
+      <a th:href="@{/user/join}" class="btn btn-outline-secondary">회원가입</a>
+    </form>
+  </div>
+</html>
