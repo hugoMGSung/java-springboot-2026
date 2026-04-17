@@ -1062,6 +1062,132 @@ NOCYCLE;
 - 태그 복사/붙여넣기
 - 필요기능 추가
 
+## 11일차
+
+#### 게시판 계정 연결
+
+- 세션과 연결
+
+#### 게시판 이슈(현재 문제점)
+
+1. [x] 게시글 상세에서 이름대신 로그인 아이디가 표시
+2. [x] 본인 글이 아닌게 수정됨
+3. [x] 에디터 적용후 상세보기 화면깨짐
+
+- th:text -> th:utext 로 변경
+
+4. [ ] 게시판 다른 페이지에서 게시글 삭제후 첫번째 페이지로 전환
+5. [ ] 댓글 작성 및 삭제기능 아무나 가능
+6. [ ] Navigation 동작없는 검색 입력창
+
+#### 게시판 웹에디터 적용
+
+- 티스토리 웹에디터
+  ![alt text](image-35.png)
+
+- 웹데이터 리스트
+  - CK에디터 : https://ckeditor.com/ckeditor-5/ 유무료 웹에디터 1등
+  - `트럼보우YG` : https://alex-d.github.io/Trumbowyg/ 심플 무료 웹에디터
+
+- Trumbowyg 적용
+  1. trumbowyg 관련 css, js 파일 static 저장
+  2. layout.html 수정
+
+  ```html
+  <!doctype html>
+  <!-- th:fragment에 pageScripts 추가 -->
+  <html
+    lang="ko"
+    xmlns:th="http://www.thymeleaf.org"
+    th:fragment="layout(content, pageScripts)"
+    data-bs-theme="auto"
+  >
+    ...
+    <head>
+      <!-- trumbowyg용 css -->
+      <link
+        rel="stylesheet"
+        type="text/css"
+        th:href="@{/trumbowyg/ui/trumbowyg.min.css}"
+      />
+    </head>
+    <body>
+      ...
+      <!-- 페이지 개별 스크립트는 맨 마지막 -->
+      <script th:replace="${pageScripts} ?: ~{}"></script>
+    </body>
+  </html>
+  ```
+
+  3. form.html 수정
+
+  ```html
+  <!doctype html>
+  <!-- 추가된 pageScript 레이아웃 영역 작성 -->
+  <html
+    lang="ko"
+    xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{layout :: layout(~{::content}, ~{::pageScripts})}"
+  >
+    ...
+    <!-- pageScripts를 사용하는 페이지 -->
+    <script th:fragment="pageScripts">
+      $(function () {
+        $("#content").trumbowyg();
+      });
+    </script>
+  </html>
+  ```
+
+  4. trumbowyg 에디터를 사용하지 않는 나머지 html
+
+  ```html
+  <!doctype html>
+  <!-- pageScripts를 사용안하기때문에 ~{} 표현 -->
+  <html
+    lang="ko"
+    xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{layout :: layout(~{::content}, ~{})}"
+  ></html>
+  ```
+
+  ![alt text](image-36.png)
+
+#### 관리자 기능
+
+- 관리자구분
+  - `ROLE_USER` : 일반 사용자
+  - `ROLE_ADMIN` : 관리자
+- 게시글 삭제
+
+#### 웹사이트 홈 페이지
+
+- HomeController 생성
+- templates/home.html 생성
+
+- bootstrap 공식 예제 carousel 활용
+
+![alt text](image-37.png)
+
+#### 스터디모집 DB설계
+
+- 스터디모집 ERD
+  ![alt text](image-39.png)
+
+- 테이블 관계
+  - 스터디 종류 카테고리 1개는 여러개의 스터디글에 포함
+    - `categories 1 : N study_posts`
+  - 사용자 1명은 여러개의 스터디글을 쓸 수 있음
+    - `user_account 1 : N study_posts`
+  - 사용자 1명은 여러개의 댓글을 쓸 수 있음
+    - `user_account 1 : N comments`
+  - 스터디 게시글 1개에는 여러개의 댓글이 적힘
+    - `study_posts 1 : N comments`
+  - 사용자 1명은 여러 스터디 게시글에 신청가능
+    - `user_account 1 : N study_applications`
+  - 스터디 게시글 1개에는 여러 신청이 들어옴
+    - `study_posts 1: N study_applicaitons`
+
 #### 스터디모집 웹사이트
 
 #### 게시판 내용 웹에디터 추가
