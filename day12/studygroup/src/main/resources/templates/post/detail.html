@@ -1,0 +1,87 @@
+<!doctype html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::content}, ~{::pageScripts})}"
+>
+  <div th:fragment="content" class="container my-3">
+    <h3>스터디포스트 상세</h3>
+
+    <table class="table table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th colspan="2" class="text-center" th:text="${post.title}"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th style="width: 20%">번호</th>
+          <td style="width: 80%" th:text="${post.postId}"></td>
+        </tr>
+        <tr>
+          <th>카테고리</th>
+          <td th:text="${post.categoryName}"></td>
+        </tr>
+        <!-- <tr>
+          <th>제목</th>
+          <td th:text="${post.title}"></td>
+        </tr> -->
+        <tr>
+          <th>작성자</th>
+          <td th:text="${post.writerName}"></td>
+        </tr>
+        <tr>
+          <th>모집인원</th>
+          <td th:text="${post.maxMembers}"></td>
+        </tr>
+        <tr>
+          <th>조회수</th>
+          <td th:text="${post.viewCount}"></td>
+        </tr>
+        <tr>
+          <th>작성일</th>
+          <td
+            th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"
+          ></td>
+        </tr>
+        <tr>
+          <th>내용</th>
+          <td>
+            <div th:utext="${post.content}"></div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="text-end">
+      <a
+        th:if="${session.loginUser != null and session.loginUser.userId == post.userId}"
+        th:href="@{|/studypost/edit/${post.postId}|}"
+        class="btn btn-sm btn-primary"
+      >
+        <i class="bi bi-pencil-square"></i> 수정
+      </a>
+
+      <form
+        th:if="${session.loginUser != null and (session.loginUser.userId == post.userId or session.loginUser.role == 'ROLE_ADMIN')}"
+        th:action="@{|/studypost/delete/${post.postId}|}"
+        method="post"
+        style="display: inline"
+        onsubmit="return confirm('정말 삭제하시겠습니까?');"
+      >
+        <button
+          type="submit"
+          class="btn btn-sm btn-danger"
+          th:if="${session.loginUser != null and (session.loginUser.userId == post.userId or session.loginUser.role == 'ROLE_ADMIN')}"
+        >
+          <i class="bi bi-trash-fill"></i> 삭제
+        </button>
+      </form>
+      <a th:href="@{/studypost/list}" class="btn btn-sm btn-success">
+        <i class="bi bi-list"></i> 목록
+      </a>
+    </div>
+  </div>
+
+  <script th:fragment="pageScripts"></script>
+</html>

@@ -1,0 +1,95 @@
+<!doctype html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::content}, ~{::pageScripts})}"
+>
+  <!-- #PRC03, 컨트롤러에서 표시한 웹페이지에서 boardForm에 있던, 모델에 지정된 멤버변수들을 사용
+       타임리프 문법에 따라서
+       일반 멤버변수쓸때는 ${}
+       입력필드로 쓸때는 *{}
+       URL과 멤버변수를 섞어 쓸때는 @{}와 |를 같이 씀
+       #으로 시작되는 것은 타임리프 내장함수
+   -->
+  <div th:fragment="content" class="container my-3">
+    <h3
+      th:text="${boardForm.boardId != null} ? '게시글 수정' : '게시글 등록'"
+    ></h3>
+
+    <!-- boardForm.boardId가 있으면 수정, 없으면 새글 등록 -->
+    <form
+      th:object="${boardForm}"
+      th:action="${boardForm != null and boardForm.boardId != null} ? @{|/board/edit/${boardForm.boardId}|} : @{/board/create}"
+      method="post"
+    >
+      <!-- 로그인아이디 숨김값 -->
+      <input type="hidden" th:field="*{writerId}" />
+
+      <div class="row">
+        <label for="title" class="form-label">제목</label>
+        <input
+          type="text"
+          id="title"
+          th:field="*{title}"
+          class="form-control"
+        />
+      </div>
+      <div
+        class="error alert alert-danger"
+        th:if="${#fields.hasErrors('title')}"
+        th:errors="*{title}"
+      ></div>
+
+      <div class="row">
+        <label for="writer" class="form-label">작성자</label>
+        <input
+          type="text"
+          id="writer"
+          th:field="*{writer}"
+          class="form-control"
+          readonly
+        />
+      </div>
+      <div
+        class="error alert alert-danger"
+        th:if="${#fields.hasErrors('writer')}"
+        th:errors="*{writer}"
+      ></div>
+
+      <div class="row">
+        <label for="content" class="form-label">내용</label>
+        <textarea
+          id="content"
+          th:field="*{content}"
+          class="form-control"
+        ></textarea>
+      </div>
+      <div
+        class="error alert alert-danger"
+        th:if="${#fields.hasErrors('content')}"
+        th:errors="*{content}"
+      ></div>
+
+      <div class="row mt-2">
+        <div class="col">
+          <div class="text-end">
+            <button type="submit" class="btn btn-sm btn-primary">
+              <i class="bi bi-floppy"></i> 저장
+            </button>
+            <a th:href="@{/board/list}" class="btn btn-sm btn-success">
+              <i class="bi bi-list"></i> 목록
+            </a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script th:fragment="pageScripts">
+    $(function () {
+      $("#content").trumbowyg({
+        lang: "ko",
+      });
+    });
+  </script>
+</html>
