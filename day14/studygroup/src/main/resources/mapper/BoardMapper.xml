@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pknu26.studygroup.mapper.BoardMapper">
+    <select id="findAll" resultType="Board">
+        SELECT B.BOARD_ID
+             , B.TITLE
+             , B.CONTENT
+             --, B.WRITER
+             -- Oracle, MySQL 전부다 사용가능
+             , COALESCE(U.NAME, B.WRITER) AS WRITER             
+             , B.CREATED_AT
+             , B.UPDATED_AT
+             , (
+                SELECT COUNT(*)
+                  FROM REPLY R
+                 WHERE R.BOARD_ID = B.BOARD_ID
+               ) AS REPLY_COUNT
+          FROM BOARD B LEFT JOIN USER_ACCOUNT U
+            ON B.WRITER = U.LOGIN_ID         
+         ORDER BY B.BOARD_ID DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(*)
+          FROM BOARD
+    </select>
+
+    <select id="findById" parameterType="long" resultType="Board">
+        -- 아이디와 이름 같이 출력 수정
+        SELECT b.BOARD_ID
+             , b.TITLE
+             , b.CONTENT
+             , b.WRITER
+             , u.LOGIN_ID
+             , u.NAME
+             , b.CREATED_AT
+             , b.UPDATED_AT
+         FROM BOARD b LEFT JOIN USER_ACCOUNT u
+           ON b.WRITER = u.LOGIN_ID
+        WHERE b.BOARD_ID = #{boardId}
+    </select>
+    
+    <!-- #PRC14 - 전달된 Board 객체 값을 사용해서 쿼리를 실행 -->
+    <insert id="insertBoard" parameterType="Board">        
+        INSERT INTO BOARD (
+            BOARD_ID, 
+            TITLE,
+            CONTENT,
+            WRITER, 
+            CREATED_AT
+        ) VALUES (
+            board_seq.NEXTVAL, 
+            #{title},      
+            #{content}, 
+            #{writer}, 
+            SYSDATE
+        )
+    </insert>
+
+    <update id="updateBoard" parameterType="Board">
+        UPDATE BOARD
+           SET TITLE= #{title}
+             , CONTENT= #{content}
+             , WRITER= #{writer}
+             , UPDATED_AT= SYSDATE
+         WHERE BOARD_ID= #{boardId}
+    </update>
+
+    <delete id="deleteBoard" parameterType="long">
+        DELETE FROM BOARD
+         WHERE BOARD_ID=#{boardId}
+    </delete>
+</mapper>
