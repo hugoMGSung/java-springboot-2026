@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pknu26.studygroup.mapper.StudyApplicationMapper">
+    <insert id="insertApplication" parameterType="StudyApplication">
+        INSERT INTO study_applications (
+            application_id,
+            post_id,
+            user_id,
+            message,
+            status,
+            created_at
+        ) VALUES (
+            seq_study_applications.NEXTVAL,
+            #{postId},
+            #{userId},
+            #{message},
+            'PENDING',
+            SYSDATE
+        )
+    </insert>
+
+    <select id="countByPostIdAndUserId" resultType="int">
+        SELECT COUNT(*)
+          FROM study_applications
+         WHERE post_id = #{postId}
+           AND user_id = #{userId}
+    </select>
+
+    <select id="countByPostIdApproved" parameterType="long" resultType="int">
+        SELECT COUNT(*)
+          FROM study_applications
+         WHERE post_id = #{postId}
+           AND status = 'APPROVED'
+    </select>
+
+    <select id="findByPostId" parameterType="long" resultType="StudyApplication">
+        SELECT a.application_id
+             , a.post_id
+             , a.user_id
+             , a.message
+             , a.status
+             , a.created_at
+             , u.name AS applicant_name
+             , p.title AS post_title
+          FROM study_applications a
+          JOIN user_account u ON a.user_id = u.user_id
+          JOIN study_posts p ON a.post_id = p.post_id
+         WHERE a.post_id = #{postId}
+         ORDER BY a.application_id DESC
+    </select>
+
+    <select id="findByUserId" parameterType="long" resultType="StudyApplication">
+        SELECT a.application_id
+             , a.post_id
+             , a.user_id
+             , a.message
+             , a.status
+             , a.created_at
+             , u.name AS applicant_name
+             , p.title AS post_title
+          FROM study_applications a
+          JOIN user_account u ON a.user_id = u.user_id
+          JOIN study_posts p ON a.post_id = p.post_id  
+         WHERE a.user_id = #{userId}
+         ORDER BY a.application_id DESC
+    </select>
+
+    <select id="findById" parameterType="long" resultType="StudyApplication">
+        SELECT a.application_id
+             , a.post_id
+             , a.user_id
+             , a.message
+             , a.status
+             , a.created_at
+             , u.name AS applicant_name
+             , p.title AS post_title
+          FROM study_applications a
+          JOIN user_account u ON a.user_id = u.user_id
+          JOIN study_posts p ON a.post_id = p.post_id
+         WHERE a.application_id = #{applicationId}
+    </select>
+
+    <update id="updateStatus">
+        UPDATE study_applications
+           SET status = #{status}
+         WHERE application_id = #{applicationId}
+    </update>
+
+    <select id="countApprovedByPostId" parameterType="long" resultType="int">
+        SELECT COUNT(*)
+          FROM study_applications
+         WHERE post_id = #{postId}
+           AND status = 'APPROVED'
+    </select>
+</mapper>
