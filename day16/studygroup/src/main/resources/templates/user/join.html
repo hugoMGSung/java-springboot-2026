@@ -1,0 +1,62 @@
+<!doctype html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::content}, ~{})}"
+>
+  <div th:fragment="content" class="container my-3" style="max-width: 600px">
+    <h3 class="mb-4">회원가입</h3>
+
+    <form th:action="@{/user/join}" th:object="${userJoinForm}" method="post">
+      <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+      </div>
+
+      <div class="mb-3">
+        <label for="loginId" class="form-label">아이디</label>
+        <input
+          type="text"
+          id="loginId"
+          th:field="*{loginId}"
+          class="form-control"
+        />
+        <div class="text-danger mt-1" th:errors="*{loginId}"></div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">패스워드</label>
+        <input
+          type="password"
+          id="password"
+          th:field="*{password}"
+          class="form-control"
+        />
+        <div class="text-danger mt-1" th:errors="*{password}"></div>
+      </div>
+
+      <div class="mb-3">
+        <label for="passwordConfirm" class="form-label">패스워드 확인</label>
+        <input
+          type="password"
+          id="passwordConfirm"
+          th:field="*{passwordConfirm}"
+          class="form-control"
+        />
+        <div class="text-danger mt-1" th:errors="*{passwordConfirm}"></div>
+      </div>
+
+      <div class="mb-3">
+        <label for="name" class="form-label">이름</label>
+        <input type="text" id="name" th:field="*{name}" class="form-control" />
+        <div class="text-danger mt-1" th:errors="*{name}"></div>
+      </div>
+
+      <button type="submit" class="btn btn-sm btn-primary">
+        <i class="bi bi-person-fill"></i> 회원가입
+      </button>
+      <a th:href="@{/}" class="btn btn-sm btn-secondary">
+        <i class="bi bi-house-fill"></i> 홈</a
+      >
+    </form>
+  </div>
+</html>

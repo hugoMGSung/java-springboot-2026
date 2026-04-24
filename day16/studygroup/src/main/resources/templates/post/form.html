@@ -1,0 +1,105 @@
+<!doctype html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::content}, ~{::pageScripts})}"
+>
+  <div th:fragment="content" class="container my-3">
+    <h3
+      th:text="${studyPostForm.postId != null} ? '스터디포스트 수정' : '스터디포스트 등록'"
+    ></h3>
+
+    <!-- studyPostForm.postId가 있으면 수정, 없으면 새글 등록 -->
+    <form
+      th:object="${studyPostForm}"
+      th:action="${studyPostForm != null and studyPostForm.postId != null} ? @{|/studypost/edit/${studyPostForm.postId}|} : @{/studypost/create}"
+      method="post"
+    >
+      <!-- 로그인아이디 숨김값 -->
+      <input type="hidden" th:field="*{postId}" />
+
+      <div class="row">
+        <div class="col">
+          <label for="title" class="form-label">카테고리</label>
+          <!-- <input
+            type="number"
+            id="categoryId"
+            th:field="{categoryId}"
+            class="form-control"
+          /> -->
+          <select th:field="*{categoryId}" class="form-select">
+            <option value="">-- 선택하세요 --</option>
+            <option
+              th:each="category : ${categoryList}"
+              th:value="${category.categoryId}"
+              th:text="${category.categoryName}"
+            ></option>
+          </select>
+          <div class="text-danger mt-1" th:errors="*{categoryId}"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="title" class="form-label">제목</label>
+          <input
+            type="text"
+            id="title"
+            th:field="*{title}"
+            class="form-control"
+          />
+          <div class="text-danger mt-1" th:errors="*{title}"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="writer" class="form-label">모집인원</label>
+          <input
+            type="number"
+            id="maxMembers"
+            th:field="*{maxMembers}"
+            class="form-control"
+            min="2"
+            value="2"
+          />
+          <div class="text-danger mt-1" th:errors="*{maxMembers}"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="content" class="form-label">내용</label>
+          <textarea
+            id="content"
+            th:field="*{content}"
+            class="form-control"
+            rows="3"
+          ></textarea>
+          <div class="text-danger mt-1" th:errors="*{content}"></div>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col">
+          <div class="text-end">
+            <button type="submit" class="btn btn-sm btn-primary">
+              <i class="bi bi-floppy"></i> 저장
+            </button>
+            <a th:href="@{/studypost/list}" class="btn btn-sm btn-success">
+              <i class="bi bi-list"></i> 목록
+            </a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script th:fragment="pageScripts">
+    $(function () {
+      $("#content").trumbowyg({
+        lang: "ko",
+      });
+    });
+  </script>
+</html>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pknu26.studygroup.mapper.StudentMapper">
+    
+    <select id="findAll" resultType="Student">
+        SELECT id
+             , name
+             , age
+             , major
+          FROM student
+         ORDER BY id
+    </select>
+
+    <select id="findById" parameterType="long" resultType="Student">
+        SELECT id
+             , name
+             , age
+             , major
+          FROM student
+         WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="Student">
+        INSERT INTO student (
+            id,
+            name,
+            age,
+            major
+        ) VALUES (
+            student_seq.NEXTVAL, 
+            #{name}, 
+            #{age}, 
+            #{major}
+        )
+    </insert>
+</mapper>
