@@ -64,7 +64,20 @@ public class SiteImageService {
     }
 
     public void update(SiteImageForm form) throws Exception {
-        // TODO
+        SiteImage siteImage = this.siteImageMapper.findById(form.getId());
+        if (siteImage == null) {
+            throw new IllegalArgumentException("존재하지 않는 이미지입니다.");
+        }
+
+        MultipartFile file = form.getImageFile();
+        if (file != null && !file.isEmpty()) {
+            siteImage.setImagePath(saveFile(file));
+        }
+
+        siteImage.setImageKey(form.getImageKey().trim());
+        siteImage.setUseYn(form.getUseYn());
+
+        this.siteImageMapper.update(siteImage);
     }
 
     public void delete(Long id) {
