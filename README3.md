@@ -187,6 +187,8 @@ StudyGroup
   - mapper, SiteImageMapper findAllActive() 메서드 추가, xml 추가
   - service, SiteImageService 메서드 변경
   - home, HomeController home 메서드 로직 변경
+ 
+  https://github.com/user-attachments/assets/3adda6c9-ce3c-4755-b789-60f1d3fb993a
 
 #### 남은 이슈
 
