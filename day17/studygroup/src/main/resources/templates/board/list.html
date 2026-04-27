@@ -1,0 +1,104 @@
+<!doctype html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::content}, ~{})}"
+>
+  <div th:fragment="content" class="container my-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3>게시판 리스트</h3>
+
+      <div class="text-end">
+        총 <span th:text="${response.totalCount}"></span> 건
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <!-- 게시판 목록-->
+        <table class="table">
+          <thead class="table-dark">
+            <tr>
+              <th class="text-center">순번</th>
+              <th class="text-center">제목</th>
+              <th class="text-center">작성자</th>
+              <th class="text-center">작성일자</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:if="${#lists.isEmpty(response.dtoList)}">
+              <td colspan="4" class="text-center">게시글이 없습니다</td>
+            </tr>
+            <tr th:each="board, index : ${response.dtoList}">
+              <td class="text-end" th:text="${board.boardId}"></td>
+              <td>
+                <a
+                  th:href="@{|/board/detail/${board.boardId}|}"
+                  th:text="${board.title}"
+                ></a>
+
+                <span
+                  th:if="${board.replyCount > 0}"
+                  th:text=" ' [' + ${board.replyCount} + ']'"
+                  class="text-danger"
+                ></span>
+              </td>
+              <td class="text-center" th:text="${board.writer}"></td>
+              <!-- 날짜포맷 변경 함수 #temporals.format(date, 'yyyy-MM-dd HH:mm:ss') -->
+              <!-- <td th:text="${board.createDate}"></td> -->
+              <td
+                class="text-center"
+                th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}"
+              ></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- 게시글쓰기 버튼 영역 -->
+        <div class="row">
+          <div class="col-9">
+            <!-- 페이지네이션 -->
+            <nav>
+              <ul class="pagination pagination-sm justify-content-center">
+                <li class="page-item" th:if="${response.prev}">
+                  <a
+                    class="page-link"
+                    th:href="@{/board/list(page=${response.startPage - 1})}"
+                    >◀</a
+                  >
+                </li>
+
+                <li
+                  class="page-item"
+                  th:each="pageNum : ${#numbers.sequence(response.startPage, response.endPage)}"
+                  th:classappend="${pageNum == response.currentPage} ? 'active'"
+                >
+                  <a
+                    class="page-link"
+                    th:href="@{/board/list(page=${pageNum})}"
+                    th:text="${pageNum}"
+                  ></a>
+                </li>
+
+                <li class="page-item" th:if="${response.next}">
+                  <a
+                    class="page-link"
+                    th:href="@{/board/list(page=${response.endPage + 1})}"
+                    >▶</a
+                  >
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div class="col-3">
+            <div class="text-end">
+              <a th:href="@{/board/create}" class="btn btn-sm btn-success">
+                <i class="bi bi-pencil"></i> 글쓰기</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</html>

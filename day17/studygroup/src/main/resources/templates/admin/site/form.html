@@ -1,0 +1,68 @@
+<!doctype html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::content}, ~{})}"
+>
+  <div th:fragment="content" class="container my-3">
+    <h3 th:text="${siteForm.id != null} ? '사이트 수정' : '사이트 등록'"></h3>
+
+    <form
+      th:object="${siteForm}"
+      th:action="${siteForm != null and siteForm.id != null} ? @{|/admin/site/edit/${siteForm.id}|} : @{/admin/site/create}"
+      method="post"
+    >
+      <!-- 카테고리아이디 숨김값 -->
+      <input type="hidden" th:field="*{id}" />
+
+      <div class="row">
+        <div class="col">
+          <label for="contentKey" class="form-label">컨텐츠키</label>
+          <input
+            type="text"
+            id="contentKey"
+            th:field="*{contentKey}"
+            class="form-control"
+          />
+          <div class="text-danger mt-1" th:errors="*{contentKey}" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="contentBody" class="form-label">컨텐츠내용</label>
+          <input
+            type="text"
+            id="contentBody"
+            th:field="*{contentBody}"
+            class="form-control"
+          />
+          <div class="text-danger mt-1" th:errors="*{contentBody}" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="useYn" class="form-label">사용유무</label>
+          <select id="useYn" th:field="*{useYn}" class="form-select">
+            <option value="Y">사용</option>
+            <option value="N">미사용</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col">
+          <div class="text-end">
+            <button type="submit" class="btn btn-sm btn-primary">
+              <i class="bi bi-floppy"></i> 저장
+            </button>
+            <a th:href="@{/admin/site/list}" class="btn btn-sm btn-success">
+              <i class="bi bi-list"></i> 목록
+            </a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</html>

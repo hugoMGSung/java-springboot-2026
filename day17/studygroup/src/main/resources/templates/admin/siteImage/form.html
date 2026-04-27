@@ -1,0 +1,156 @@
+<!doctype html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::content}, ~{::pageScripts})}"
+>
+  <div th:fragment="content" class="container my-3">
+    <h3
+      th:text="${siteImageForm.id != null} ? '사이트 이미지 수정' : '사이트 이미지 등록'"
+    ></h3>
+
+    <!-- enctype="multipart/form-data" 파일업로드 속성 -->
+    <form
+      th:object="${siteImageForm}"
+      th:action="${siteImageForm != null and siteImageForm.id != null} ? @{|/admin/image/edit/${siteImageForm.id}|} : @{/admin/image/create}"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <!-- 숨김값 -->
+      <input type="hidden" th:field="*{id}" />
+
+      <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+        <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="imageKey" class="form-label">이미지키</label>
+          <input
+            type="text"
+            id="imageKey"
+            th:field="*{imageKey}"
+            class="form-control"
+          />
+          <div class="text-danger mt-1" th:errors="*{imageKey}" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="useYn" class="form-label">사용유무</label>
+          <select id="useYn" th:field="*{useYn}" class="form-select">
+            <option value="Y">사용</option>
+            <option value="N">미사용</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label class="form-label">이미지 파일</label>
+
+          <div
+            id="dropZone"
+            class="border border-2 rounded p-4 text-center bg-light"
+            style="cursor: pointer"
+          >
+            이미지를 여기로 드래그하거나 클릭해서 선택하세요
+          </div>
+
+          <input
+            type="file"
+            id="imageFile"
+            th:field="*{imageFile}"
+            class="form-control mt-2"
+            accept="image/*"
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label class="form-label">미리보기</label>
+          <div class="border rounded p-3 text-center bg-white">
+            <img
+              id="previewImage"
+              th:src="${currentImagePath}"
+              alt="미리보기"
+              style="max-width: 100%; max-height: 300px"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col">
+          <div class="text-end">
+            <button type="submit" class="btn btn-sm btn-primary">
+              <i class="bi bi-floppy"></i> 저장
+            </button>
+            <a th:href="@{/admin/image/list}" class="btn btn-sm btn-success">
+              <i class="bi bi-list"></i> 목록
+            </a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script th:fragment="pageScripts">
+    document.addEventListener("DOMContentLoaded", function () {
+      // 드롭존, 이미지파일, 프리뷰이미지 아이디로 핸들링
+      const dropZone = document.getElementById("dropZone");
+      const fileInput = document.getElementById("imageFile");
+      const previewImage = document.getElementById("previewImage");
+
+      // 파일로드 미리보기 이미지에 표시함수
+      function previewFile(file) {
+        if (!file || !file.type.startsWith("image/")) {
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          previewImage.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      // 드롭존 클릭 숨겨진 input 클릭
+      dropZone.addEventListener("click", function () {
+        fileInput.click();
+      });
+
+      // 파일 선택
+      fileInput.addEventListener("change", function () {
+        const file = this.files[0];
+        previewFile(file);
+      });
+
+      // 마우스 드래그로 이미지 처리
+      dropZone.addEventListener("dragover", function (e) {
+        e.preventDefault();
+        dropZone.classList.add("border-primary");
+      });
+
+      dropZone.addEventListener("dragleave", function () {
+        dropZone.classList.remove("border-primary");
+      });
+
+      dropZone.addEventListener("drop", function (e) {
+        e.preventDefault();
+        dropZone.classList.remove("border-primary");
+
+        const file = e.dataTransfer.files[0];
+        if (!file) return;
+
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        fileInput.files = dt.files;
+
+        previewFile(file);
+      });
+    });
+  </script>
+</html>
