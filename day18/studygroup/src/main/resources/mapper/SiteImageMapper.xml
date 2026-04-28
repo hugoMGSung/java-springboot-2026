@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pknu26.studygroup.mapper.SiteImageMapper">
+    <select id="findAll" resultType="SiteImage">
+        SELECT id
+             , image_key
+             , image_path
+             , use_yn
+             , created_at
+          FROM site_image
+         ORDER BY id ASC
+    </select>
+
+    <select id="findAllActive" resultType="SiteImage">
+        SELECT id
+             , image_key
+             , image_path
+             , use_yn
+             , created_at
+          FROM site_image
+         WHERE use_yn = 'Y'
+         ORDER BY id ASC
+    </select>
+
+    <select id="findById" parameterType="long" resultType="SiteImage">
+        SELECT id
+             , image_key
+             , image_path
+             , use_yn
+             , created_at
+          FROM site_image
+         WHERE id = #{id}
+    </select>
+
+    <select id="findByImageKey" parameterType="string" resultType="SiteImage">
+        SELECT id
+             , image_key
+             , image_path
+             , use_yn
+             , created_at
+          FROM site_image
+         WHERE image_key = #{imageKey}
+           AND use_yn = 'Y'
+    </select>
+
+    <insert id="insert" parameterType="SiteImage">
+        INSERT INTO site_image (
+            id, 
+            image_key, 
+            image_path, 
+            use_yn, 
+            created_at
+        ) VALUES (
+            seq_site_image.NEXTVAL,
+            #{imageKey},
+            #{imagePath},
+            #{useYn},
+            SYSDATE
+        )
+    </insert>
+
+    <update id="update" parameterType="SiteImage">
+        UPDATE site_image
+           SET image_key = #{imageKey}
+             , image_path = #{imagePath}
+             , use_yn = #{useYn}
+         WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM site_image
+         WHERE id = #{id}
+    </delete>
+</mapper>

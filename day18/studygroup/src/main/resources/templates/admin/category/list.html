@@ -1,0 +1,66 @@
+<!doctype html>
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{layout :: layout(~{::content}, ~{})}"
+>
+  <div th:fragment="content" class="container my-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3>카테고리 관리 리스트</h3>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <table class="table">
+          <thead class="table-dark">
+            <tr>
+              <th class="text-center">ID</th>
+              <th class="text-center">카테고리명</th>
+              <th class="text-center">관리</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="category : ${categoryList}">
+              <td th:text="${category.categoryId}" class="text-end"></td>
+              <td th:text="${category.categoryName}"></td>
+              <td class="text-end">
+                <a
+                  th:href="@{/admin/categories/edit/{id}(id=${category.categoryId})}"
+                  class="btn btn-sm btn-warning"
+                >
+                  <i class="bi bi-pencil"></i>
+                  수정
+                </a>
+
+                <form
+                  th:action="@{/admin/categories/delete/{id}(id=${category.categoryId})}"
+                  method="post"
+                  style="display: inline"
+                >
+                  <button
+                    type="submit"
+                    class="btn btn-sm btn-danger"
+                    onclick="return confirm('정말 삭제하시겠습니까?');"
+                  >
+                    <i class="bi bi-trash-fill"></i>
+                    삭제
+                  </button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="text-end">
+      <a th:href="@{/admin/categories/create}" class="btn btn-sm btn-primary">
+        <i class="bi bi-pencil"></i> 등록
+      </a>
+      <a th:href="@{/studypost/list}" class="btn btn-sm btn-success">
+        <i class="bi bi-list"></i>
+        스터디 목록</a
+      >
+    </div>
+  </div>
+</html>

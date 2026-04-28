@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pknu26.studygroup.mapper.StudyPostMapper">
+    <select id="findAll" resultType="StudyPost">
+        SELECT p.post_id
+             , p.user_id
+             , p.category_id
+             , p.title
+             , p.content
+             , p.max_members
+             , p.status
+             , p.view_count
+             , p.created_at
+             , p.updated_at
+             , u.name AS writer_name
+             , c.category_name
+          FROM study_posts p
+          JOIN user_account u ON p.user_id = u.user_id
+          LEFT JOIN categories c ON p.category_id = c.category_id
+         ORDER BY p.post_id DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(*)
+          FROM study_posts
+    </select>
+
+    <select id="findById" parameterType="long" resultType="StudyPost">
+        SELECT p.post_id
+             , p.user_id
+             , p.category_id
+             , p.title
+             , p.content
+             , p.max_members
+             , p.status
+             , p.view_count
+             , p.created_at
+             , p.updated_at
+             , u.name AS writer_name
+             , c.category_name
+          FROM study_posts p
+          JOIN user_account u ON p.user_id = u.user_id
+          LEFT JOIN categories c ON p.category_id = c.category_id
+         WHERE p.post_id = #{postId}
+    </select>
+
+    <insert id="insertPost" parameterType="StudyPost">
+        INSERT INTO study_posts (
+            post_id,
+            user_id,
+            category_id,
+            title,
+            content,
+            max_members,
+            status,
+            view_count,
+            created_at,
+            updated_at
+        ) VALUES (
+            seq_study_posts.NEXTVAL,
+            #{userId},
+            #{categoryId},
+            #{title},
+            #{content},
+            #{maxMembers},
+            'OPEN',
+            0,
+            SYSDATE,
+            SYSDATE
+        )
+    </insert>
+
+    <update id="increaseViewCount" parameterType="long">
+        UPDATE study_posts
+           SET view_count = view_count + 1
+         WHERE post_id = #{postId}
+    </update>
+
+    <update id="updatePost" parameterType="StudyPost">
+        UPDATE study_posts
+           SET category_id = #{categoryId}
+             , title = #{title}
+             , max_members = #{maxMembers}
+             , content = #{content}
+             , updated_at = SYSDATE
+         WHERE post_id = #{postId}
+    </update>
+
+    <update id="updatePostStatus">
+        UPDATE study_posts
+           SET status = #{status}
+             , updated_at = SYSDATE
+         WHERE post_id = #{postId}
+    </update>    
+
+    <delete id="deletePost" parameterType="long">
+        DELETE FROM study_posts
+         WHERE post_id = #{postId}
+    </delete>
+</mapper>
