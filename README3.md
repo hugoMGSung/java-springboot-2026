@@ -435,6 +435,72 @@ JWT API Login
 
   ![alt text](image-63.png)
 
+#### 수정할 소스
+
+- application.properties 구글 프로필 설정 변경
+
+  ```properties
+  spring.security.oauth2.client.registration.google.scope=email,profile
+  ```
+
+- build.gradle OAuth2 설정 변경
+
+  ```groovy
+  // implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-client'
+  implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+  ```
+
+- mapper, UserMapper.java 메서드 오타
+
+  ```java
+  void insertSocialUser(User user);  // insertSocialuser -> insertSocialUser
+  ```
+
+- resources/mapper, UserMapper.xml에 password NULL 처리
+
+  ```xml
+  <insert id="insertSocialUser" parameterType="User">
+      -- password null 처리
+      INSERT INTO USER_ACCOUNT (
+          USER_ID,
+          LOGIN_ID,
+          PASSWORD,
+          NAME,
+          ROLE,
+          CREATED_AT
+      ) VALUES (
+          #{userId},
+          #{loginId},
+          null,
+          #{name},
+          #{role},
+          SYSDATE
+      )
+  </insert>
+  ```
+
+- security, CustomOAuth2UserDetails 클래스 추가 : [소스](./day18/studygroup/src/main/java/com/pknu26/studygroup/security/CustomOAuth2UserDetails.java)
+
+- security, CustomOAuth2UserService 클래스 loadUser 메서드 리턴값 변경
+
+  ```java
+  // Spring Security가 객체를 사용할 수 있도록 리턴
+  // 260430. DefaultOAuth2UserDetail -> CustomOAuth2UserDetails 변경해야 세션저장
+  return new CustomOAuth2UserDetails(
+          user,
+          List.of(new SimpleGrantedAuthority(user.getRole())),
+          attributes,
+          "name"); // sub -> name
+  ```
+
+- 구글로그인은 크롬 설정에서 쿠키 삭제 후 테스트
+
+  ![alt text](image-64.png)
+
+- 실행결과
+
+  ![alt text](image-65.png)
+
 ### 남은 이슈
 
 - [x] favicon 추가
