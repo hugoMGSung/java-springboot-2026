@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pknu26.studygroup.mapper.UserSocialAccountMapper">
+    <select id="findByProviderAndProviderUserId" resultType="UserSocialAccount">
+        SELECT SOCIAL_ID
+             , USER_ID
+             , PROVIDER
+             , PROVIDER_USER_ID
+             , EMAIL
+             , NAME
+             , PROFILE_IMAGE
+             , CREATED_AT
+             , UPDATED_AT
+          FROM USER_SOCIAL_ACCOUNT
+         WHERE PROVIDER = #{provider}
+           AND PROVIDER_USER_ID = #{providerUserId}
+    </select>
+
+    <insert id="insertSocialAccount" parameterType="UserSocialAccount">
+        INSERT INTO USER_SOCIAL_ACCOUNT (
+            SOCIAL_ID,
+            USER_ID,
+            PROVIDER,
+            PROVIDER_USER_ID,
+            EMAIL,
+            NAME,
+            PROFILE_IMAGE,
+            CREATED_AT
+        ) VALUES (
+            USER_SOCIAL_ACCOUNT_SEQ.NEXTVAL,
+            #{userId},
+            #{provider},
+            #{providerUserId},
+            #{email},
+            #{name},
+            #{profileImage},
+            SYSDATE
+        )
+    </insert>    
+</mapper>

@@ -28,10 +28,46 @@
         ) VALUES (
             user_account_seq.nextval,
             #{loginId}, 
-            #{password},
+            #{password,jdbcType=VARCHAR},
             #{name}, 
             #{role}, 
             SYSDATE
         )
     </insert>
+
+    <select id="nextUserId" resultType="long">
+        SELECT USER_ACCOUNT_SEQ.NEXTVAL FROM DUAL
+    </select>
+
+    <select id="findByEmail" parameterType="string" resultType="User">
+        SELECT USER_ID
+            , LOGIN_ID
+            , PASSWORD
+            , NAME
+            , ROLE
+            , CREATED_AT
+            , UPDATED_AT
+        FROM USER_ACCOUNT
+        WHERE LOGIN_ID = #{email}
+    </select>
+
+    <insert id="insertSocialUser" parameterType="User">
+        -- password null 처리
+        INSERT INTO USER_ACCOUNT (
+            USER_ID,
+            LOGIN_ID,
+            PASSWORD,
+            NAME,
+            ROLE,
+            CREATED_AT
+        ) VALUES (
+            #{userId},
+            #{loginId},
+            null,
+            #{name},
+            #{role},
+            SYSDATE
+        )
+    </insert>
+
 </mapper>
